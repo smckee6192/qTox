@@ -249,7 +249,8 @@ HEADERS  += src/widget/form/addfriendform.h \
     src/nexus.h \
     src/widget/gui.h \
     src/widget/androidgui.h \
-    src/offlinemsgengine.h
+    src/offlinemsgengine.h \
+    src/toxme.h
 
 SOURCES += \
     src/widget/form/addfriendform.cpp \
@@ -328,7 +329,8 @@ SOURCES += \
     src/nexus.cpp \
     src/widget/gui.cpp \
     src/widget/androidgui.cpp \
-    src/offlinemsgengine.cpp
+    src/offlinemsgengine.cpp \
+    src/toxme.cpp
 
 contains(DEFINES, QTOX_FILTER_AUDIO) {
     HEADERS += src/audiofilterer.h

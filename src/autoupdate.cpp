@@ -36,8 +36,12 @@
 
 #ifdef Q_OS_WIN
 #ifdef Q_OS_WIN64
+static const QString userAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) qtox/"
+                                +QString().setNum(TIMESTAMP)+" qtox-updater/1.0";
 const QString AutoUpdater::platform = "win64";
 #else
+static const QString userAgent = "Mozilla/5.0 (Windows NT 6.1; rv:31.0) qtox/"
+                                +QString().setNum(TIMESTAMP)+" qtox-updater/1.0";
 const QString AutoUpdater::platform = "win32";
 #endif
 const QString AutoUpdater::updaterBin = "qtox-updater.exe";
@@ -50,6 +54,8 @@ unsigned char AutoUpdater::key[crypto_sign_PUBLICKEYBYTES] =
 };
 
 #elif defined(Q_OS_OSX)
+static const QString userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X) qtox/"
+                                +QString().setNum(TIMESTAMP)+" qtox-updater/1.0";
 const QString AutoUpdater::platform = "osx";
 const QString AutoUpdater::updaterBin = "/Applications/qtox.app/Contents/MacOS/updater";
 const QString AutoUpdater::updateServer = "https://dist-build.tox.im";
@@ -61,6 +67,8 @@ unsigned char AutoUpdater::key[crypto_sign_PUBLICKEYBYTES] =
 };
 
 #else
+static const QString userAgent = "Mozilla/5.0 (Unknown) qtox/"
+                                +QString().setNum(TIMESTAMP)+" qtox-updater/1.0";
 const QString AutoUpdater::platform;
 const QString AutoUpdater::updaterBin;
 const QString AutoUpdater::updateServer;
@@ -95,7 +103,9 @@ AutoUpdater::VersionInfo AutoUpdater::getUpdateVersion()
         return versionInfo;
 
     QNetworkAccessManager *manager = new QNetworkAccessManager;
-    QNetworkReply* reply = manager->get(QNetworkRequest(QUrl(checkURI)));
+    QNetworkRequest request(QUrl(checkURI));
+    request.setRawHeader("User-Agent", userAgent);
+    QNetworkReply* reply = manager->get(request);
     while (!reply->isFinished())
         qApp->processEvents();
 
